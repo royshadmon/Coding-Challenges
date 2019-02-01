@@ -1,0 +1,42 @@
+Nyansa Producer Consumer Exercise Solution.
+
+The problem with the code is that an error will occur when the consumer tries to remove an item from the following  line:
+
+item = fifo_queue.remove()
+
+because there could be a situation where there is no item in the queue.
+The following are situations that could occur:
+1. The queue is not empty. Result -> success.
+2. The queue is empty. The if statement will return true and then a wait will occur. During the wait an item enters the queue and the consumer will be able to remove an item from the queue.
+Result -> success.
+3. The queue is empty. The if statement will return true and then a wait will occur. After the wait, the queue is still empty. Result -> error.
+
+Therefore, the following change would be the fix:
+
+if (fifo_queue.empty()) { 
+while (fifo_queue.empty()) { //fix
+
+Changing the if statement to a while loop fixes the problem because an item will never be removed from an empty queue as it will require the queue to be not empty for the while loop to terminate, and
+and item being removed from the queue.
+
+Therefore, the code should look as such:
+
+Producer
+while (true) {
+       item = generate_item()
+       mutex.lock()
+       fifo_queue.push(item)
+       mutex.unlock()
+       condition.signal()
+}
+
+Consumers
+while(true) {
+       mutex.lock()
+       while (fifo_queue.empty()) {   // fix
+             condition.wait(mutex)
+       }
+       item = fifo_queue.remove()
+       mutex.unlock()
+       process_item(item)
+}
