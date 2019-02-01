@@ -1,0 +1,10 @@
+To compile and run report_summary.py, simply download report_summary.py and input.txt and run the following commands.
+
+python3 report_summary.py
+
+----------------------------------------------------------------------------------------------------------------
+Requirements:
+
+Python 3 installed. 
+
+
