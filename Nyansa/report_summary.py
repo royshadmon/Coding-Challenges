@@ -25,15 +25,16 @@ def main():
     dateURLDict = {}
 
     for line in file:
-        epoch, url = _seperateDateURL(line)
-        date = _epochToDate(epoch)
-        if date not in dateURLDict:
-            dateURLDict[date] = {}
-            dateURLDict[date][url] = 1
-        elif url not in dateURLDict[date]:
-            dateURLDict[date][url] = 1
-        else:
-            dateURLDict[date][url] += 1
+        if str(line.strip()):     
+            epoch, url = _seperateDateURL(line)
+            date = _epochToDate(epoch)
+            if date not in dateURLDict:
+                dateURLDict[date] = {}
+                dateURLDict[date][url] = 1
+            elif url not in dateURLDict[date]:
+                dateURLDict[date][url] = 1
+            else:
+                dateURLDict[date][url] += 1
 
     _printSortedDateUrlDict(dateURLDict)
 
